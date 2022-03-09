@@ -10,7 +10,7 @@ function App() {
     console.log('data',data)
   }
   
-  const [createExpense, setCreateExpense] = useState(true)
+  const [createExpense, setCreateExpense] = useState(false)
 
   const changeCreateExpense = (expense) => {
     setCreateExpense(expense)
