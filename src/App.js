@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Login from "./pages/Login";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Signup from "./pages/Signup";
+import Navbar from "./components/Navbar/Navbar";
 function App() {
   const addEnteredExpenses = (data) => {
     setExpenses([...expenses, data]);
@@ -16,6 +17,7 @@ function App() {
   const [userId, setUserId] = useState("");
   const [error, setError] = useState("");
   const [signup, setSignup] = useState(false);
+  const [name, setName] = useState("");
 
   const changeCreateExpense = (expense) => {
     setCreateExpense(expense);
@@ -30,6 +32,7 @@ function App() {
   const logoutHandler = () => {
     setIsAuthorized(false);
     setToken(null);
+    setName("")
     localStorage.removeItem("token");
     localStorage.removeItem("expiryDate");
     localStorage.removeItem("userId");
@@ -50,6 +53,7 @@ function App() {
             login(email: "${email}", password: "${password}") {
               token
               userId
+              name
             }
           }
         `,
@@ -78,6 +82,8 @@ function App() {
         setIsAuthorized(true);
         setToken(resData.data.login.token);
         setUserId(resData.data.login.userId);
+        setName(resData.data.login.name);
+        
 
         localStorage.setItem("token", resData.token);
         localStorage.setItem("userId", resData.userId);
@@ -184,6 +190,7 @@ function App() {
 
   return (
     <div>
+      <Navbar name={name} onLogout={logoutHandler}/>
       <NewExpense
         createExpense={createExpense}
         onCreate={changeCreateExpense}

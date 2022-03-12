@@ -1,0 +1,74 @@
+.navbar {
+  background-color: #a892ee;
+  padding: 0.5rem;
+  margin: 0.5rem auto;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.navbar button {
+  font: inherit;
+  cursor: pointer;
+  padding: 1rem 1rem;
+  border: 1px solid #40005d;
+  background-color: #40005d;
+  color: white;
+  border-radius: 12px;
+  margin-right: 1rem;
+}
+
+.navbar button:hover,
+.navbar button:active {
+  background-color: #510674;
+  border-color: #510674;
+}
+
+.navbar button.alternative {
+  color: #220131;
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.navbar button.alternative:hover,
+.navbar button.alternative:active {
+  background-color: #ddb3f8;
+}
+
+.navbar__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  text-align: left;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.navbar__control label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.navbar__control input {
+  font: inherit;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 100%;
+}
+
+.navbar__actions {
+  text-align: right;
+}
+
+.hide {
+  display: none;
+}
