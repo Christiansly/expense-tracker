@@ -15,6 +15,7 @@ function App() {
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState("");
   const [error, setError] = useState("");
+  const [signup, setSignup] = useState(false);
 
   const changeCreateExpense = (expense) => {
     setCreateExpense(expense);
@@ -27,11 +28,20 @@ function App() {
   };
 
   const logoutHandler = () => {
-    this.setState({ isAuthorized: false, token: null });
+    setIsAuthorized(false);
+    setToken(null);
     localStorage.removeItem("token");
     localStorage.removeItem("expiryDate");
     localStorage.removeItem("userId");
   };
+
+  const signupUser = () => {
+    setSignup(true);
+  };
+
+  const changeSignup = () => {
+    setSignup(false);
+  }
 
   const handleLogin = ({ email, password }) => {
     const graphqlQuery = {
@@ -89,14 +99,16 @@ function App() {
     // event.preventDefault();
     const graphqlQuery = {
       query: `
-          mutation {
-            createUser(userInput: {email: "${email}", name: "${name}", password: "${password}"}) {
-              _id
-              email
-            }
-          }
+      mutation {
+        createUser(userInput: {email: "${email}", password: "${password}", name: "${name}"}) {
+          _id,
+          name
+        }
+      }
         `,
     };
+
+    console.log("email: " + email, "name: " + name, "password: " + password);
 
     fetch("http://localhost:8080/graphql", {
       method: "POST",
@@ -119,11 +131,13 @@ function App() {
         }
         console.log(resData);
         setIsAuthorized(false);
+        setSignup(false);
       })
       .catch((err) => {
         console.log(err);
         setIsAuthorized(false);
         setError(err);
+        setSignup(true);
       });
   };
 
@@ -148,7 +162,7 @@ function App() {
       date: new Date(2021, 5, 12),
     },
   ]);
-  if (!isAuthorized) {
+  if (!isAuthorized && !signup) {
     return (
       // <Router>
       //   <Routes>
@@ -160,8 +174,12 @@ function App() {
       //     </Route>
       //   </Routes>
       // </Router>
-      <Login onLogin={handleLogin} />
+      <Login onLogin={handleLogin} signup={signupUser} />
     );
+  }
+
+  if (signup) {
+    return <Signup onSignup={handleSignup} onLogin={changeSignup} />;
   }
 
   return (

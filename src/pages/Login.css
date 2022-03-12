@@ -2,7 +2,7 @@
   background-color: #a892ee;
   padding: 1rem;
   margin: 2rem auto;
-  width: 50rem;
+  width: 40rem;
   max-width: 95%;
   border-radius: 12px;
   text-align: center;
@@ -43,20 +43,25 @@
   gap: 1rem;
   margin-bottom: 1rem;
   text-align: left;
+  display: block;
+  
 }
 
 .login__control label {
   font-weight: bold;
   margin-bottom: 0.5rem;
   display: block;
+  
 }
+
+
 
 .login__control input {
   font: inherit;
   padding: 0.5rem;
   border-radius: 6px;
   border: 1px solid #ccc;
-  width: 20rem;
+  width: 100%;
   max-width: 100%;
 }
 
