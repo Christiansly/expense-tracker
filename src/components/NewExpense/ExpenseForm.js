@@ -34,12 +34,13 @@ function ExpenseForm(props) {
     }
 
     const submitHandler = (event) => {
-        event.preventDefault()
+        // event.preventDefault()
         const expenseDate = {
             title: enteredTitle,
             amount: +enteredAmount,
             date: new Date(enteredDate)
         }
+        console.log("i")
         props.onSaveExpenseData(expenseDate)
         setEnteredDate('')
         setEnteredAmount('')
@@ -49,6 +50,7 @@ function ExpenseForm(props) {
 
     const onCancelAfterCreate = (event) => {
         event.preventDefault()
+        console.log(enteredTitle, enteredAmount, enteredDate)
         if (!enteredTitle) {
             return
         }
@@ -58,14 +60,17 @@ function ExpenseForm(props) {
         if(!enteredDate) {
             return
         }
+        submitHandler()
        onCancel()
     }
     
     const onCancel = (event) => {
+        // event.preventDefault()
         props.onCreate(false)
     }
     
     const onCreate = (event) => {
+        event.preventDefault()
         props.onCreate(true)
     }
     const classList = () => {

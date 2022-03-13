@@ -10,7 +10,8 @@ function Expenses(props) {
     console.log('data',data)
   }
   const filterExpenses = props.expenses.filter(e => {
-    return e.date.getFullYear() == filter
+    const date = new Date(e.date)
+    return date.getFullYear() == filter
 
   })
   return (

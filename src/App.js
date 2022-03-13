@@ -1,11 +1,12 @@
 import Expenses from "./components/Expenses/Expenses";
 import NewExpense from "./components/NewExpense/NewExpense";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Login from "./pages/Login";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Navbar from "./components/Navbar/Navbar";
 function App() {
+  
   const addEnteredExpenses = (data) => {
     setExpenses([...expenses, data]);
     console.log("data", data);
@@ -54,6 +55,12 @@ function App() {
               token
               userId
               name
+              expenses {
+                _id
+                amount
+                date
+                title
+              }
             }
           }
         `,
@@ -83,6 +90,8 @@ function App() {
         setToken(resData.data.login.token);
         setUserId(resData.data.login.userId);
         setName(resData.data.login.name);
+        setExpenses(resData.data.login.expenses);
+        console.log(expenses);
         
 
         localStorage.setItem("token", resData.token);
@@ -147,6 +156,53 @@ function App() {
       });
   };
 
+  const handleCreateExpense = ({title, amount, date}) => {
+    console.log("title: " + title, "amount: " + amount, "date: " + date)
+    const graphqlQuery = {
+      query: `
+      mutation {
+        createExpense(expenseInput: {title: "${title}", amount: "${amount}", date: "${date}"}) {
+          _id,
+          title,
+          amount,
+          date
+        }
+      }
+        `,
+    };
+    console.log(graphqlQuery)
+
+    fetch("http://localhost:8080/graphql", {
+      method: "POST",
+      headers: {
+        Authorization: 'Bearer ' + token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(graphqlQuery),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+        if (resData.errors && resData.errors[0].status === 422) {
+          throw new Error(
+            "Unable to create Expense"
+          );
+        }
+        if (resData.errors) {
+          throw new Error("Unable to create Expense");
+        }
+        console.log(resData);
+        
+      })
+      .catch((err) => {
+        console.log(err);
+      
+      });
+
+  }
+
   const [expenses, setExpenses] = useState([
     {
       id: "e1",
@@ -194,7 +250,7 @@ function App() {
       <NewExpense
         createExpense={createExpense}
         onCreate={changeCreateExpense}
-        onAddExpenses={addEnteredExpenses}
+        onAddExpenses={handleCreateExpense}
       />
 
       <Expenses expenses={expenses} />
