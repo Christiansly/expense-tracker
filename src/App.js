@@ -170,7 +170,6 @@ function App() {
       }
         `,
     };
-    console.log(graphqlQuery)
 
     fetch("http://localhost:8080/graphql", {
       method: "POST",
@@ -194,6 +193,7 @@ function App() {
           throw new Error("Unable to create Expense");
         }
         console.log(resData);
+        addEnteredExpenses({amount: resData.data.createExpense.amount, date: resData.data.createExpense.date, title: resData.data.createExpense.title, _id: resData.data.createExpense._id})
         
       })
       .catch((err) => {
